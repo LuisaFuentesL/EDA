@@ -1,0 +1,102 @@
+Domain Domicilios {
+
+    domainVisionStatement = "Este dominio tiene como objetivo modelar todo el contexto de EDA. Es decir, el encargado de la logistica y entrega de bienes alrededor del pais"
+
+    //***************************************************
+    //*********************Nucleo************************
+    //***************************************************
+
+    Subdomain ManejoDeRutas {
+        type = CORE_DOMAIN
+
+        Entity Ruta {
+        Double idRuta
+        String direccionOrigen
+        String direccionDestino
+        }
+    }
+
+    Subdomain EmpresasTransporte {
+        type = CORE_DOMAIN
+
+        Entity Empresa {
+        Double idEmpresa
+        String nomEmpresa
+        int numVehiculos
+        }
+    }
+
+    //***************************************************
+    //********************Generico***********************
+    //***************************************************
+
+    Subdomain Almacenamiento {
+        type = GENERIC_SUBDOMAIN
+
+        Entity Almacen {
+        Double idAlmacen
+        String tipoAlmacen
+        float capacidad
+        String direccion
+        }
+    }
+
+    Subdomain LogisticaPedidos {
+        type = GENERIC_SUBDOMAIN
+
+        Entity Pedido {
+        Double idPedido
+        String valorTotal
+        String idCliente
+        List<Double> idProducto
+        }
+
+        Entity Producto {
+        Double idProducto
+        String nombreProducto
+        String valor
+        String categoria
+        }
+
+        Entity Cliente {
+        Double idCliente
+        String nombreCliente
+        String cedula
+        String direccion
+        }
+    }
+        
+    Subdomain ManejoEnvios {
+        type = GENERIC_SUBDOMAIN
+
+        Entity Envio {
+        Double idEnvio
+        String direccion
+        Double idPedido
+        }
+    }
+        
+    Subdomain Transporte {
+        type = GENERIC_SUBDOMAIN
+
+        Entity Vehiculo {
+        Double idVehiculo
+        String capacidad
+        String placa
+        }
+    }
+
+    //***************************************************
+    //********************Soporte************************
+    //***************************************************
+
+    Subdomain CSaaS {
+        type = SUPPORTING_DOMAIN
+
+        Entity Proveedor {
+        Double idProveedor
+        String nomProveedor
+        String tipo
+        }
+    }
+}

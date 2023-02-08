@@ -1,0 +1,106 @@
+ContextMap AS_ISContextMap {
+
+	type = SYSTEM_LANDSCAPE
+  	state = AS_IS
+
+    contains EmpresasTransporteContext
+    contains RutasContext
+	contains AlmacenamientoContext
+	contains PedidoContext
+
+    EmpresasTransporteContext [D,ACL] <- [U] RutasContext
+    EmpresasTransporteContext [D] <- [U] PedidoContext
+    AlmacenamientoContext [D,ACL] <- [U] EmpresasTransporteContext
+    RutasContext [D] <- [U,OHS,PL] PedidoContext
+    AlmacenamientoContext [P] <-> [P] PedidoContext
+
+}
+
+BoundedContext EmpresasTransporteContext {
+
+    type = FEATURE
+    domainVisionStatement = "El contexto de transporte es el responsable de asignar una empresa de transporte y un vehiculo a un pedido."
+
+    Module Empresas {
+        basePackage = se.citerus.dddsample.domain.model
+
+		Aggregate InfoEmpresas {
+
+			Entity Empresa
+			ValueObject NomEmpresa
+			ValueObject NumVehiculos
+		}
+
+        Aggregate InfoTransporte {
+
+			Entity Vehiculo
+			ValueObject CapacidadVehiculo
+			ValueObject Placa
+		}
+	}  
+}
+
+BoundedContext RutasContext {
+
+    type = FEATURE
+    domainVisionStatement = "El contexto de rutas es responsable de calcular la ruta más óptima para enviar los pedidos."
+
+     Module Rutas {
+
+        Aggregate InfoRutas {
+
+			Entity Ruta
+			ValueObject Fecha
+			ValueObject DireccionOrigen
+			ValueObject DireccionDestino
+		}
+     }
+}
+
+BoundedContext AlmacenamientoContext {
+
+    type = FEATURE
+    domainVisionStatement = "Este contexto es el encargado de el manejo del almacenamiento de los productos en las bodegas de la empresa"
+
+    Module Almancenes {
+        basePackage = se.citerus.dddsample.domain.model
+
+		Aggregate InfoAlmacenes {
+
+			Entity Almacen
+			ValueObject TipoAlmacen
+			ValueObject Capacidad
+			ValueObject DireccionAlmacen
+		}
+	}  
+}
+
+BoundedContext PedidoContext {
+
+    type = FEATURE
+    domainVisionStatement = "Este contexto acotado gestiona los pedidos que hacen los clientes y los envíos de los mismos."
+
+    Module Pedidos {
+        basePackage = se.citerus.dddsample.domain.model
+
+		Aggregate InfoPedidos {
+
+			Entity Pedido
+			ValueObject ValorTotal
+		}
+
+		Aggregate InfoProducto{
+
+			Entity Producto
+			ValueObject NombreProducto
+			ValueObject ValorProd
+			ValueObject CategoriaProd
+		} 
+
+		Aggregate InfoEnvio{
+
+			Entity Envio
+			ValueObject Direccion
+		}        
+	} 
+}
